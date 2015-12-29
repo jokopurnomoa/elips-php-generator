@@ -65,7 +65,7 @@ int generate_controller(char *controller_name){
         return 0;
     }
 
-    char *controller_file = malloc(sizeof(CONTROLLER_DIR));;
+    char *controller_file = malloc(sizeof(CONTROLLER_DIR) + sizeof(controller_name) + 4);;
     strcat(controller_file, CONTROLLER_DIR);
     strcat(controller_file, controller_name);
     strcat(controller_file, ".php");
@@ -88,7 +88,7 @@ int generate_model(char *model_name){
         return 0;
     }
 
-    char *model_file = malloc(sizeof(MODEL_DIR));;
+    char *model_file = malloc(sizeof(MODEL_DIR) + sizeof(model_name) + 4);
     strcat(model_file, MODEL_DIR);
     strcat(model_file, model_name);
     strcat(model_file, ".php");
@@ -100,8 +100,8 @@ int generate_model(char *model_name){
     
     char *model_data = malloc(sizeof(MODEL_DATA));
     strcpy(model_data, MODEL_DATA);
-    model_data = str_replace("$model_name", model_name, model_data);
-
+    strcpy(model_data, str_replace("$model_name", model_name, model_data));
+    
     return write_file(model_file, model_data);
 }
 
@@ -115,7 +115,7 @@ int main(int argc, char *argv[]){
                     if(generate_controller(controller_name)){
 	    				printf("Success generate controler \"%s\"\n", argv[3]);
 	    			} else {
-	    				printf("Failed generate controler %s!\n", argv[3]);
+	    				printf("Failed generate controler \"%s\"!\n", argv[3]);
 	    			}
 	    		} else {
                     printf("Undefined controller name!\n");
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]){
                     if(generate_model(model_name)){
                         printf("Success generate model \"%s\"\n", argv[3]);
                     } else {
-                        printf("Failed generate model %s!\n", argv[3]);
+                        printf("Failed generate model \"%s\"!\n", argv[3]);
                     }
                 } else {
                     printf("Undefined model name!\n");
